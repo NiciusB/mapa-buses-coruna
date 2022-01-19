@@ -15,13 +15,18 @@ async function main() {
 
 	console.log(`Loading ${baseInfo.lines.length} lines...`)
 
+	let doneN = 0
 	const buses = await Promise.all(
 		baseInfo.lines.map((line) => {
 			return itranviasApi.getLineBuses(line.id).finally(() => {
-				console.debug(`Line ${line.id} done!`)
+				console.debug(
+					`Line ${line.id} done! (${++doneN}/${baseInfo.lines.length})`
+				)
 			})
 		})
 	)
+
+	console.log('All done!')
 
 	const fileStr = JSON.stringify({
 		lines: baseInfo.lines,
@@ -30,5 +35,7 @@ async function main() {
 	})
 
 	fs.writeFileSync(stateFilePath, fileStr)
+
+	console.log('Written result to ' + stateFilePath)
 }
 main()

@@ -16,7 +16,7 @@ function consumeQueue() {
 	_queryItrV3(item.params).catch(item.reject).then(item.resolve)
 }
 
-setInterval(consumeQueue, 15000)
+setInterval(consumeQueue, 10000)
 
 function _queryItrV3(params: Object) {
 	params = {
@@ -25,20 +25,28 @@ function _queryItrV3(params: Object) {
 	}
 	const querystr = new URLSearchParams(params as URLSearchParams).toString()
 
+	const controller = new AbortController()
+	const timeout = setTimeout(() => controller.abort(), 15000)
+
 	return fetch('https://itranvias.com/queryitr_v3.php?' + querystr, {
 		method: 'GET',
+		signal: controller.signal,
 		headers: {
 			'User-Agent': 'MapaBusesCoruña/1.0',
 		},
-	}).then(async (res) => {
-		const body = (await res.arrayBuffer().then(Buffer.from)).toString()
-
-		try {
-			return JSON.parse(body)
-		} catch (error) {
-			throw new Error(error.message + '\n\n' + body)
-		}
 	})
+		.then(async (res) => {
+			const body = (await res.arrayBuffer().then(Buffer.from)).toString()
+
+			try {
+				return JSON.parse(body)
+			} catch (error) {
+				throw new Error(error.message + '\n\n' + body)
+			}
+		})
+		.finally(() => {
+			clearTimeout(timeout)
+		})
 }
 
 export function queryItrV3(params: Object) {
