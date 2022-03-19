@@ -100,6 +100,7 @@ async function getLineBuses(
 								distance: bus.distancia,
 								status,
 								direction: parseInt(sentido, 10),
+								lastUpdatedAt: Date.now(),
 							}
 						})
 					}) ?? []

@@ -4,6 +4,8 @@ import tintIcon from './tintIcon'
 import L from 'leaflet'
 import escapeHTML from './escapeHTML'
 
+const rtf = new Intl.RelativeTimeFormat('es')
+
 const busesMarkers: L.Marker[] = []
 export default async function reloadBusesMarkers(
 	map: L.Map,
@@ -30,7 +32,12 @@ export default async function reloadBusesMarkers(
 			.bindTooltip(
 				`Bus ${escapeHTML(bus.busId + '')}<br>${escapeHTML(
 					stop.name
-				)}<br>Distancia ${Math.round(bus.distance * 1000)}m`
+				)}<br>Distancia ${Math.round(
+					bus.distance * 1000
+				)}m<br>Actualizado ${rtf.format(
+					Math.round((bus.lastUpdatedAt - Date.now()) / 1000 / 60),
+					'minutes'
+				)}`
 			)
 
 		busesMarkers.push(marker)

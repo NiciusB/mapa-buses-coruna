@@ -4,12 +4,31 @@ const VITE_WEBSOCKET_SERVER_URI: string = import.meta.env
 export function connectToServer(
 	stateCallback: (state: StateTypes.State) => any
 ) {
-	const ws = new WebSocket(VITE_WEBSOCKET_SERVER_URI)
+	function connect() {
+		const ws = new WebSocket(VITE_WEBSOCKET_SERVER_URI)
 
-	ws.onmessage = ({ data }) => {
-		data = JSON.parse(data)
-		if (data.event === 'state') {
-			stateCallback(data.state)
+		ws.onmessage = ({ data }) => {
+			data = JSON.parse(data)
+			if (data.event === 'state') {
+				stateCallback(data.state)
+			}
+		}
+
+		ws.onclose = function (e) {
+			console.log(
+				'Socket is closed. Reconnect will be attempted in 1 second.',
+				e.reason
+			)
+			setTimeout(function () {
+				connect()
+			}, 1000)
+		}
+
+		ws.onerror = function (err) {
+			console.error('Socket encountered error. Closing socket', err)
+			ws.close()
 		}
 	}
+
+	connect()
 }

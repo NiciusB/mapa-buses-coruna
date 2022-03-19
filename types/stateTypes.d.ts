@@ -23,6 +23,7 @@ declare namespace StateTypes {
 		distance: number
 		status: BusStatus
 		direction: number
+		lastUpdatedAt: number
 	}
 
 	interface Stop {
