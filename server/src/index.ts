@@ -7,9 +7,11 @@ async function index() {
 	const generator = main()
 	while (true) {
 		await generator.next()
-		wss.clients.forEach((client) =>
-			client.send(JSON.stringify({ event: 'state', state }))
-		)
+		wss.clients.forEach((client) => {
+			if (client.readyState === WebSocket.OPEN) {
+				client.send(JSON.stringify({ event: 'state', state }))
+			}
+		})
 	}
 }
 index()
