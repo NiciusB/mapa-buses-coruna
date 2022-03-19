@@ -2,7 +2,7 @@
 	"apps": [
 		{
 			"name": "mapa-buses-coruna-server",
-			"args": "dist/src/index.js"
+			"script": "./dist/src/index.js"
 		}
 	]
 }
