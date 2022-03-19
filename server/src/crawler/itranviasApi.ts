@@ -58,6 +58,7 @@ async function getBaseInfo() {
 async function getLineBuses(
 	lineId: number
 ): Promise<StateTypes.LineRouteBus[]> {
+	// https://itranvias.com/queryitr_v3.php?func=99&dato=1500&mostrar=PRB muestra las coordenadas exactas de cada bus, pero no nos da el rate limit para todo
 	return queryItrV3({
 		dato: lineId,
 		func: '2',
