@@ -12,9 +12,16 @@ function saveStateJson() {
 	fs.writeFileSync(STATE_FILE_PATH, JSON.stringify(state), 'utf-8')
 }
 
-export let state: StateTypes.State = null!
+export let state: StateTypes.State
 if (fs.existsSync(STATE_FILE_PATH)) {
 	state = JSON.parse(fs.readFileSync(STATE_FILE_PATH, 'utf-8'))
+} else {
+	state = {
+		lastUpdateTs: Date.now(),
+		lines: [],
+		buses: [],
+		stops: [],
+	}
 }
 
 export default async function* main() {
