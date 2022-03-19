@@ -27,6 +27,12 @@ if (fs.existsSync(STATE_FILE_PATH)) {
 export default async function* main() {
 	while (true) {
 		const baseInfo = await itranviasApi.getBaseInfo()
+		state.lines.forEach((oldLine) => {
+			if (!baseInfo.lines.some((newLine) => newLine.id === oldLine.id)) {
+				// If a line disappears, delete all buses to avoid them getting stuck forever
+				state.buses = state.buses.filter((bus) => bus.lineId !== oldLine.id)
+			}
+		})
 		state.lines = baseInfo.lines
 		state.stops = baseInfo.stops
 		saveStateJson()
