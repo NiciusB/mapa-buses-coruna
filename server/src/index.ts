@@ -4,8 +4,9 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 async function index() {
+	const generator = main()
 	while (true) {
-		await main().next()
+		await generator.next()
 		wss.clients.forEach((client) =>
 			client.send(JSON.stringify({ event: 'state', state }))
 		)

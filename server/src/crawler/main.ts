@@ -18,8 +18,8 @@ if (fs.existsSync(STATE_FILE_PATH)) {
 } else {
 	state = {
 		lastUpdateTs: Date.now(),
-		lines: [],
 		buses: [],
+		lines: [],
 		stops: [],
 	}
 }
