@@ -21,16 +21,24 @@ export interface LineRoute {
 }
 
 export interface LineRouteBus {
+	busId: number
 	lineId: number
-	lineRouteId: number
+	stopId: number
 	distance: number
 	status: BusStatus
 	direction: number
 }
 
-export interface Stops {
+export interface Stop {
 	id: number
 	name: string
 	x: number
 	y: number
+}
+
+export interface State {
+	lastUpdateTs: number
+	lines: Line[]
+	stops: Stop[]
+	buses: LineRouteBus[]
 }

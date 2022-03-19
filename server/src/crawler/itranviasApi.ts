@@ -1,5 +1,5 @@
 import { queryItrV3 } from './itranviasApiBase.js'
-import * as Crawler from './Crawler.js'
+import * as stateTypes from '../../../stateTypes.js'
 
 async function getBaseInfo() {
 	return queryItrV3({
@@ -24,8 +24,8 @@ async function getBaseInfo() {
 			}[]
 		} = res.iTranvias.actualizacion
 
-		const lines: Crawler.Line[] = root.lineas.map((apiLine) => {
-			const line: Crawler.Line = {
+		const lines: stateTypes.Line[] = root.lineas.map((apiLine) => {
+			const line: stateTypes.Line = {
 				id: apiLine.id,
 				name: apiLine.lin_comer,
 				originName: apiLine.nombre_orig,
@@ -43,7 +43,7 @@ async function getBaseInfo() {
 			return line
 		})
 
-		const stops: Crawler.Stops[] = root.paradas.map((parada) => {
+		const stops: stateTypes.Stop[] = root.paradas.map((parada) => {
 			return {
 				id: parada.id,
 				name: parada.nombre,
@@ -56,7 +56,9 @@ async function getBaseInfo() {
 	})
 }
 
-async function getLineBuses(lineId: number): Promise<Crawler.LineRouteBus[]> {
+async function getLineBuses(
+	lineId: number
+): Promise<stateTypes.LineRouteBus[]> {
 	return queryItrV3({
 		dato: lineId,
 		func: '2',
@@ -74,27 +76,28 @@ async function getLineBuses(lineId: number): Promise<Crawler.LineRouteBus[]> {
 				return (
 					paradas?.map((parada) => {
 						return parada.buses.map((bus) => {
-							let status: Crawler.BusStatus
+							let status: stateTypes.BusStatus
 							switch (bus.estado) {
 								case 0:
-									status = Crawler.BusStatus.s0
+									status = stateTypes.BusStatus.s0
 									break
 								case 1:
-									status = Crawler.BusStatus.s1
+									status = stateTypes.BusStatus.s1
 									break
 								case 16:
-									status = Crawler.BusStatus.s16
+									status = stateTypes.BusStatus.s16
 									break
 								case 17:
-									status = Crawler.BusStatus.s17
+									status = stateTypes.BusStatus.s17
 									break
 								default:
 									throw new Error('Unknown bus status: ' + bus.estado)
 							}
 
 							return {
+								busId: bus.bus,
 								lineId,
-								lineRouteId: parada.parada,
+								stopId: parada.parada,
 								distance: bus.distancia,
 								status,
 								direction: parseInt(sentido, 10),
