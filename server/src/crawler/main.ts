@@ -38,17 +38,19 @@ export default async function* main() {
 		saveStateJson()
 		yield
 
-		yield* await Promise.all(
-			baseInfo.lines.map((line) =>
-				itranviasApi.getLineBuses(line.id).then((lineBuses) => {
-					state.buses = [
-						...state.buses.filter((bus) => bus.lineId !== line.id),
-						...lineBuses,
-					]
-					saveStateJson()
-					return
-				})
-			)
+		const lineBusPromises = baseInfo.lines.map((line) =>
+			itranviasApi.getLineBuses(line.id).then((lineBuses) => {
+				state.buses = [
+					...state.buses.filter((bus) => bus.lineId !== line.id),
+					...lineBuses,
+				]
+				saveStateJson()
+			})
 		)
+
+		for (const promise of lineBusPromises) {
+			await promise
+			yield
+		}
 	}
 }

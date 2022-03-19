@@ -1,5 +1,5 @@
 import main, { state } from './crawler/main.js'
-import { WebSocketServer } from 'ws'
+import WebSocket, { WebSocketServer } from 'ws'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -7,11 +7,7 @@ async function index() {
 	const generator = main()
 	while (true) {
 		await generator.next()
-		wss.clients.forEach((client) => {
-			if (client.readyState === WebSocket.OPEN) {
-				client.send(JSON.stringify({ event: 'state', state }))
-			}
-		})
+		broadcast(JSON.stringify({ event: 'state', state }))
 	}
 }
 index()
@@ -27,3 +23,11 @@ wss.on('listening', () => {
 wss.on('connection', function connection(ws) {
 	ws.send(JSON.stringify({ event: 'state', state }))
 })
+
+function broadcast(message: string) {
+	wss.clients.forEach((client) => {
+		if (client.readyState === WebSocket.OPEN) {
+			client.send(message)
+		}
+	})
+}

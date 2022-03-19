@@ -16,12 +16,10 @@ export function connectToServer(
 
 		ws.onclose = function (e) {
 			console.log(
-				'Socket is closed. Reconnect will be attempted in 1 second.',
+				'Socket is closed. Reconnect will be attempted in 5 seconds.',
 				e.reason
 			)
-			setTimeout(function () {
-				connect()
-			}, 1000)
+			setTimeout(() => connect(), 5000)
 		}
 
 		ws.onerror = function (err) {
