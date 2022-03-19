@@ -3,7 +3,8 @@
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "node --loader ts-node/esm ."
+		"dev": "ts-node-esm .",
+		"prod": "tsc && pm2 startOrReload pm2.json"
 	},
 	"dependencies": {
 		"dotenv": "^16.0.0",
@@ -13,7 +14,7 @@
 	"devDependencies": {
 		"@types/node": "^17.0.10",
 		"@types/ws": "^8.5.3",
-		"ts-node": "^10.4.0",
+		"ts-node": "^10.7.0",
 		"tslib": "^2.3.1",
 		"typescript": "^4.5.4"
 	}

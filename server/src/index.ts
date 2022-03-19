@@ -14,7 +14,7 @@ async function index() {
 index()
 
 const wss = new WebSocketServer({
-	port: parseInt(process.env.WEBSOCKET_SERVER_PORT),
+	port: parseInt(process.env.WEBSOCKET_SERVER_PORT ?? ''),
 })
 
 wss.on('listening', () => {

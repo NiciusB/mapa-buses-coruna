@@ -1,12 +1,11 @@
-import * as stateTypes from '../../stateTypes.js'
 import L from 'leaflet'
-import escapeHTML from './escapeHTML.js'
-import { mergeColors, rgbToHex } from './colorUtils.js'
+import escapeHTML from './escapeHTML'
+import { mergeColors, rgbToHex } from './colorUtils'
 
 const stopsMarkers: L.Circle[] = []
 export default async function reloadStopsMarkers(
 	map: L.Map,
-	state: stateTypes.State
+	state: StateTypes.State
 ) {
 	stopsMarkers.forEach((marker) => {
 		marker.remove()

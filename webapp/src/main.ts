@@ -2,7 +2,6 @@ import '../assets/style.css'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { connectToServer } from './serverWs'
-import * as stateTypes from '../../stateTypes.js'
 import reloadBusesMarkers from './reloadBusesMarkers'
 import reloadStopsMarkers from './reloadStopsMarkers'
 
@@ -19,7 +18,7 @@ function main() {
 }
 main()
 
-async function setupMap(state: stateTypes.State) {
+async function setupMap(state: StateTypes.State) {
 	const app = document.querySelector<HTMLDivElement>('#app')!
 
 	const stopsCoordinatesAverage = {

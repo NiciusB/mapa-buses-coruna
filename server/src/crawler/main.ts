@@ -2,7 +2,6 @@ import itranviasApi from './itranviasApi.js'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import * as stateTypes from '../../../stateTypes.js'
 
 const __filename = fileURLToPath(import.meta.url)
 globalThis.__dirname = path.dirname(__filename)
@@ -13,7 +12,7 @@ function saveStateJson() {
 	fs.writeFileSync(STATE_FILE_PATH, JSON.stringify(state), 'utf-8')
 }
 
-export let state: stateTypes.State = null
+export let state: StateTypes.State = null!
 if (fs.existsSync(STATE_FILE_PATH)) {
 	state = JSON.parse(fs.readFileSync(STATE_FILE_PATH, 'utf-8'))
 }

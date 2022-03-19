@@ -1,5 +1,4 @@
 import { queryItrV3 } from './itranviasApiBase.js'
-import * as stateTypes from '../../../stateTypes.js'
 
 async function getBaseInfo() {
 	return queryItrV3({
@@ -24,8 +23,8 @@ async function getBaseInfo() {
 			}[]
 		} = res.iTranvias.actualizacion
 
-		const lines: stateTypes.Line[] = root.lineas.map((apiLine) => {
-			const line: stateTypes.Line = {
+		const lines: StateTypes.Line[] = root.lineas.map((apiLine) => {
+			const line: StateTypes.Line = {
 				id: apiLine.id,
 				name: apiLine.lin_comer,
 				originName: apiLine.nombre_orig,
@@ -43,7 +42,7 @@ async function getBaseInfo() {
 			return line
 		})
 
-		const stops: stateTypes.Stop[] = root.paradas.map((parada) => {
+		const stops: StateTypes.Stop[] = root.paradas.map((parada) => {
 			return {
 				id: parada.id,
 				name: parada.nombre,
@@ -58,7 +57,7 @@ async function getBaseInfo() {
 
 async function getLineBuses(
 	lineId: number
-): Promise<stateTypes.LineRouteBus[]> {
+): Promise<StateTypes.LineRouteBus[]> {
 	return queryItrV3({
 		dato: lineId,
 		func: '2',
@@ -76,19 +75,19 @@ async function getLineBuses(
 				return (
 					paradas?.map((parada) => {
 						return parada.buses.map((bus) => {
-							let status: stateTypes.BusStatus
+							let status: StateTypes.BusStatus
 							switch (bus.estado) {
 								case 0:
-									status = stateTypes.BusStatus.s0
+									status = 's0'
 									break
 								case 1:
-									status = stateTypes.BusStatus.s1
+									status = 's1'
 									break
 								case 16:
-									status = stateTypes.BusStatus.s16
+									status = 's16'
 									break
 								case 17:
-									status = stateTypes.BusStatus.s17
+									status = 's17'
 									break
 								default:
 									throw new Error('Unknown bus status: ' + bus.estado)

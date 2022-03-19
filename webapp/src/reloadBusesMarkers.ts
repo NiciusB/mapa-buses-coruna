@@ -1,14 +1,13 @@
-import * as stateTypes from '../../stateTypes.js'
-import bulkLoadAssets from './bulkLoadAssets.js'
+import bulkLoadAssets from './bulkLoadAssets'
 import busIconPng from '../assets/bus-icon.png'
 import tintIcon from './tintIcon'
 import L from 'leaflet'
-import escapeHTML from './escapeHTML.js'
+import escapeHTML from './escapeHTML'
 
 const busesMarkers: L.Marker[] = []
 export default async function reloadBusesMarkers(
 	map: L.Map,
-	state: stateTypes.State
+	state: StateTypes.State
 ) {
 	const [busIconImage] = await bulkLoadAssets([busIconPng])
 
