@@ -16,7 +16,7 @@ function consumeQueue() {
 	_queryItrV3(item.params).catch(item.reject).then(item.resolve)
 }
 
-setInterval(consumeQueue, 10000)
+setInterval(consumeQueue, 30000)
 
 function _queryItrV3(params: Object) {
 	params = {
